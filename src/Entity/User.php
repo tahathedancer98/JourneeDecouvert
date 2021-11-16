@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -28,6 +30,28 @@ class User
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private $nb_points_competence;
+
+    #[ORM\ManyToOne(targetEntity: Niveau::class, inversedBy: 'users')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $niveau_id;
+
+    #[ORM\OneToMany(mappedBy: 'organisateur_id', targetEntity: JourneeDecouverte::class)]
+    private $journeeDecouvertes;
+
+    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Commentaire::class)]
+    private $commentaires;
+
+    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Participation::class)]
+    private $participations;
+
+    public function __construct()
+    {
+        $this->journeeDecouvertes = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
+        $this->journeeDecouverteUsers = new ArrayCollection();
+        $this->participations = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -93,4 +117,107 @@ class User
 
         return $this;
     }
+
+    public function getNiveauId(): ?Niveau
+    {
+        return $this->niveau_id;
+    }
+
+    public function setNiveauId(?Niveau $niveau_id): self
+    {
+        $this->niveau_id = $niveau_id;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|JourneeDecouverte[]
+     */
+    public function getJourneeDecouvertes(): Collection
+    {
+        return $this->journeeDecouvertes;
+    }
+
+    public function addJourneeDecouverte(JourneeDecouverte $journeeDecouverte): self
+    {
+        if (!$this->journeeDecouvertes->contains($journeeDecouverte)) {
+            $this->journeeDecouvertes[] = $journeeDecouverte;
+            $journeeDecouverte->setOrganisateurId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJourneeDecouverte(JourneeDecouverte $journeeDecouverte): self
+    {
+        if ($this->journeeDecouvertes->removeElement($journeeDecouverte)) {
+            // set the owning side to null (unless already changed)
+            if ($journeeDecouverte->getOrganisateurId() === $this) {
+                $journeeDecouverte->setOrganisateurId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Commentaire[]
+     */
+    public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(Commentaire $commentaire): self
+    {
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires[] = $commentaire;
+            $commentaire->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(Commentaire $commentaire): self
+    {
+        if ($this->commentaires->removeElement($commentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getUserId() === $this) {
+                $commentaire->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Participation[]
+     */
+    public function getParticipations(): Collection
+    {
+        return $this->participations;
+    }
+
+    public function addParticipation(Participation $participation): self
+    {
+        if (!$this->participations->contains($participation)) {
+            $this->participations[] = $participation;
+            $participation->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipation(Participation $participation): self
+    {
+        if ($this->participations->removeElement($participation)) {
+            // set the owning side to null (unless already changed)
+            if ($participation->getUserId() === $this) {
+                $participation->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
