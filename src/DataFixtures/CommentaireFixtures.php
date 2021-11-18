@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Commentaire;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -13,7 +14,7 @@ class CommentaireFixtures extends Fixture
             $commentaire[$i] = new Commentaire();
             $commentaire[$i]->setContent('gkjehkgj zehg zgl ihrzghler gakjgaj jkz');
             $commentaire[$i]->setUser($this->getReference(UserFixtures::USER_BRONZE));
-            //$commentaire[$i]->
+            $commentaire[$i]->setJd($this->getReference(JdFixtures::JD_PAST));
             $manager->persist($commentaire[$i]);
         }
 
@@ -21,7 +22,7 @@ class CommentaireFixtures extends Fixture
             $commentaire[$i] = new Commentaire();
             $commentaire[$i]->setContent('lfkabhfjkabgjk bajbg jkabgj bjkbgaj bgjabgj abgjkbabg');
             $commentaire[$i]->setUser($this->getReference(UserFixtures::USER_ARGENT));
-            //JD
+            $commentaire[$i]->setJd($this->getReference(JdFixtures::JD_PAST));
             $manager->persist($commentaire[$i]);
         }
 
@@ -29,7 +30,7 @@ class CommentaireFixtures extends Fixture
             $commentaire[$i] = new Commentaire();
             $commentaire[$i]->setContent('gkjehkgj zehg zgl ihrzghler gakjgaj jkz');
             $commentaire[$i]->setUser($this->getReference(UserFixtures::USER_OR));
-            //JD
+            $commentaire[$i]->setJd($this->getReference(JdFixtures::JD_PAST));
             $manager->persist($commentaire[$i]);
         }
         $manager->flush();
