@@ -19,6 +19,9 @@ class Commentaire
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'commentaires')]
     private $user;
 
+    #[ORM\ManyToOne(targetEntity: JourneeDecouverte::class, inversedBy: 'commentaires')]
+    private $jd;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +47,18 @@ class Commentaire
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getJd(): ?JourneeDecouverte
+    {
+        return $this->jd;
+    }
+
+    public function setJd(?JourneeDecouverte $jd): self
+    {
+        $this->jd = $jd;
 
         return $this;
     }

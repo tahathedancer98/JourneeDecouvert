@@ -41,11 +41,15 @@ class JourneeDecouverte
     #[ORM\OneToMany(mappedBy: 'jd', targetEntity: Participation::class)]
     private $participations;
 
+    #[ORM\OneToMany(mappedBy: 'jd', targetEntity: Commentaire::class)]
+    private $commentaires;
+
 
     public function __construct()
     {
         $this->images = new ArrayCollection();
         $this->participations = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
     }
 
 
@@ -180,6 +184,36 @@ class JourneeDecouverte
             // set the owning side to null (unless already changed)
             if ($participation->getJd() === $this) {
                 $participation->setJd(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Commentaire[]
+     */
+    public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(Commentaire $commentaire): self
+    {
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires[] = $commentaire;
+            $commentaire->setJd($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(Commentaire $commentaire): self
+    {
+        if ($this->commentaires->removeElement($commentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getJd() === $this) {
+                $commentaire->setJd(null);
             }
         }
 
