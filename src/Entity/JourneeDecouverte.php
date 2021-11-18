@@ -33,12 +33,12 @@ class JourneeDecouverte
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'journeeDecouvertes')]
     #[ORM\JoinColumn(nullable: false)]
-    private $organisateur_id;
+    private $organisateur;
 
-    #[ORM\OneToMany(mappedBy: 'jd_id', targetEntity: Image::class)]
+    #[ORM\OneToMany(mappedBy: 'jd', targetEntity: Image::class)]
     private $images;
 
-    #[ORM\OneToMany(mappedBy: 'jd_id', targetEntity: Participation::class)]
+    #[ORM\OneToMany(mappedBy: 'jd', targetEntity: Participation::class)]
     private $participations;
 
 
@@ -114,14 +114,14 @@ class JourneeDecouverte
         return $this;
     }
 
-    public function getOrganisateurId(): ?User
+    public function getOrganisateur(): ?User
     {
-        return $this->organisateur_id;
+        return $this->organisateur;
     }
 
-    public function setOrganisateurId(?User $organisateur_id): self
+    public function setOrganisateur(?User $organisateur): self
     {
-        $this->organisateur_id = $organisateur_id;
+        $this->organisateur = $organisateur;
 
         return $this;
     }
@@ -138,7 +138,7 @@ class JourneeDecouverte
     {
         if (!$this->images->contains($image)) {
             $this->images[] = $image;
-            $image->setJdId($this);
+            $image->setJd($this);
         }
 
         return $this;
@@ -148,8 +148,8 @@ class JourneeDecouverte
     {
         if ($this->images->removeElement($image)) {
             // set the owning side to null (unless already changed)
-            if ($image->getJdId() === $this) {
-                $image->setJdId(null);
+            if ($image->getJd() === $this) {
+                $image->setJd(null);
             }
         }
 
@@ -168,7 +168,7 @@ class JourneeDecouverte
     {
         if (!$this->participations->contains($participation)) {
             $this->participations[] = $participation;
-            $participation->setJdId($this);
+            $participation->setJd($this);
         }
 
         return $this;
@@ -178,8 +178,8 @@ class JourneeDecouverte
     {
         if ($this->participations->removeElement($participation)) {
             // set the owning side to null (unless already changed)
-            if ($participation->getJdId() === $this) {
-                $participation->setJdId(null);
+            if ($participation->getJd() === $this) {
+                $participation->setJd(null);
             }
         }
 

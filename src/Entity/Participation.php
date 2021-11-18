@@ -14,10 +14,10 @@ class Participation
     private $id;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'participations')]
-    private $user_id;
+    private $user;
 
     #[ORM\ManyToOne(targetEntity: JourneeDecouverte::class, inversedBy: 'participations')]
-    private $jd_id;
+    private $jd;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $status;
@@ -27,26 +27,26 @@ class Participation
         return $this->id;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
-        return $this->user_id;
+        return $this->user;
     }
 
-    public function setUserId(?User $user_id): self
+    public function setUser(?User $user): self
     {
-        $this->user_id = $user_id;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getJdId(): ?JourneeDecouverte
+    public function getJd(): ?JourneeDecouverte
     {
-        return $this->jd_id;
+        return $this->jd;
     }
 
-    public function setJdId(?JourneeDecouverte $jd_id): self
+    public function setJd(?JourneeDecouverte $jd): self
     {
-        $this->jd_id = $jd_id;
+        $this->jd = $jd;
 
         return $this;
     }

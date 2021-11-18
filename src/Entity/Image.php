@@ -18,7 +18,7 @@ class Image
 
     #[ORM\ManyToOne(targetEntity: JourneeDecouverte::class, inversedBy: 'images')]
     #[ORM\JoinColumn(nullable: true)]
-    private $jd_id;
+    private $jd;
 
     public function getId(): ?int
     {
@@ -37,14 +37,14 @@ class Image
         return $this;
     }
 
-    public function getJdId(): ?JourneeDecouverte
+    public function getJd(): ?JourneeDecouverte
     {
-        return $this->jd_id;
+        return $this->jd;
     }
 
-    public function setJdId(?JourneeDecouverte $jd_id): self
+    public function setJd(?JourneeDecouverte $jd): self
     {
-        $this->jd_id = $jd_id;
+        $this->jd = $jd;
 
         return $this;
     }

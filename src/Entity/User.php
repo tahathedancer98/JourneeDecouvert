@@ -33,15 +33,15 @@ class User
 
     #[ORM\ManyToOne(targetEntity: Niveau::class, inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
-    private $niveau_id;
+    private $niveau;
 
-    #[ORM\OneToMany(mappedBy: 'organisateur_id', targetEntity: JourneeDecouverte::class)]
+    #[ORM\OneToMany(mappedBy: 'organisateur', targetEntity: JourneeDecouverte::class)]
     private $journeeDecouvertes;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Commentaire::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Commentaire::class)]
     private $commentaires;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Participation::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Participation::class)]
     private $participations;
 
     public function __construct()
@@ -118,14 +118,14 @@ class User
         return $this;
     }
 
-    public function getNiveauId(): ?Niveau
+    public function getNiveau(): ?Niveau
     {
-        return $this->niveau_id;
+        return $this->niveau;
     }
 
-    public function setNiveauId(?Niveau $niveau_id): self
+    public function setNiveau(?Niveau $niveau): self
     {
-        $this->niveau_id = $niveau_id;
+        $this->niveau = $niveau;
 
         return $this;
     }
@@ -142,7 +142,7 @@ class User
     {
         if (!$this->journeeDecouvertes->contains($journeeDecouverte)) {
             $this->journeeDecouvertes[] = $journeeDecouverte;
-            $journeeDecouverte->setOrganisateurId($this);
+            $journeeDecouverte->setOrganisateur($this);
         }
 
         return $this;
@@ -152,8 +152,8 @@ class User
     {
         if ($this->journeeDecouvertes->removeElement($journeeDecouverte)) {
             // set the owning side to null (unless already changed)
-            if ($journeeDecouverte->getOrganisateurId() === $this) {
-                $journeeDecouverte->setOrganisateurId(null);
+            if ($journeeDecouverte->getOrganisateur() === $this) {
+                $journeeDecouverte->setOrganisateur(null);
             }
         }
 
@@ -172,7 +172,7 @@ class User
     {
         if (!$this->commentaires->contains($commentaire)) {
             $this->commentaires[] = $commentaire;
-            $commentaire->setUserId($this);
+            $commentaire->setUser($this);
         }
 
         return $this;
@@ -182,8 +182,8 @@ class User
     {
         if ($this->commentaires->removeElement($commentaire)) {
             // set the owning side to null (unless already changed)
-            if ($commentaire->getUserId() === $this) {
-                $commentaire->setUserId(null);
+            if ($commentaire->getUser() === $this) {
+                $commentaire->setUser(null);
             }
         }
 
@@ -202,7 +202,7 @@ class User
     {
         if (!$this->participations->contains($participation)) {
             $this->participations[] = $participation;
-            $participation->setUserId($this);
+            $participation->setUser($this);
         }
 
         return $this;
@@ -212,8 +212,8 @@ class User
     {
         if ($this->participations->removeElement($participation)) {
             // set the owning side to null (unless already changed)
-            if ($participation->getUserId() === $this) {
-                $participation->setUserId(null);
+            if ($participation->getUser() === $this) {
+                $participation->setUser(null);
             }
         }
 
