@@ -19,8 +19,8 @@ class Participation
     #[ORM\ManyToOne(targetEntity: JourneeDecouverte::class, inversedBy: 'participations')]
     private $jd;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $status;
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private $present;
 
     public function getId(): ?int
     {
@@ -51,14 +51,14 @@ class Participation
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getPresent(): ?bool
     {
-        return $this->status;
+        return $this->present;
     }
 
-    public function setStatus(?string $status): self
+    public function setPresent(?bool $status): self
     {
-        $this->status = $status;
+        $this->present = $status;
 
         return $this;
     }

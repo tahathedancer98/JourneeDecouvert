@@ -40,7 +40,7 @@ class UserFixtures extends Fixture
         $userOr->setPrenom('Bouder');
         $userOr->setEmail('or@or.fr');
         $userOr->setPassword('$2y$13$kbedYesdUeMI1H27p9LOauk7GB8ty4CZ3hwnlYdhkxuceZn7c7sTi');           //user
-        $userOr->setNbPointsCompetence(0);
+        $userOr->setNbPointsCompetence(30);
         $userOr->setNiveau($this->getReference(NiveauFixtures::NIVEAU_OR));
 
         $manager->persist($userOr);

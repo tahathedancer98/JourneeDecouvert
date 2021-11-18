@@ -3,6 +3,8 @@
 namespace App\DataFixtures;
 
 use App\Entity\JourneeDecouverte;
+use DateInterval;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -13,9 +15,11 @@ class JdFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+        $yesterday = new \DateTime('@'.strtotime('yesterday'));
+
         $jdPast = new JourneeDecouverte();
         $jdPast->setTitle('Une journée qui est passé');
-        $jdPast->setDate(date("dd/mm/Y", time() - 60 * 60 * 24));
+        $jdPast->setDate($yesterday);
         $jdPast->setLieu('Alpes');
         $jdPast->setNbMaxGrimpeurs(10);
         $jdPast->setOrganisateur($this->getReference(UserFixtures::USER_OR));
@@ -23,9 +27,11 @@ class JdFixtures extends Fixture
 
         $manager->persist($jdPast);
 
+        $tomorrow = new \DateTime('@'.strtotime('tomorrow'));
+
         $jdFutur = new JourneeDecouverte();
         $jdFutur->setTitle('Une journée dans le futur');
-        $jdFutur->setDate(date("dd/mm/Y", time() + 60 * 60 * 24));
+        $jdFutur->setDate($tomorrow);
         $jdFutur->setLieu('Paris');
         $jdFutur->setNbMaxGrimpeurs(30);
         $jdFutur->setOrganisateur($this->getReference(UserFixtures::USER_OR));
