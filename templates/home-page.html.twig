@@ -1,5 +1,6 @@
 {% extends 'base.html.twig'  %}
 
 {% block body %}
-    HELLOO
+    <a href="{{ path('app_login') }}" class="btn btn-success">Se connecter</a>
+    <a href="{{ path('app_register') }}" class="btn btn-secondary">S'inscrire</a>
 {% endblock %}

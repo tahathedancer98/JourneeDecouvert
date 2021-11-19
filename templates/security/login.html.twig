@@ -4,8 +4,8 @@
 
 {% block body %}
 <form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% if error.messageData is defined %}
+        <div class="alert alert-danger">{{ error.messageData|trans(error.messageData, 'security') }}</div>
     {% else %}
 
     {% endif %}
