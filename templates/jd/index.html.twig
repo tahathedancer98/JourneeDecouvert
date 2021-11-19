@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DayDiscover{% endblock %}
+
+{% block body %}
+    <h1>Les Journées découvertes</h1>
+
+    <div class="container">
+        <a href="{{ url('jd.add') }}" class="btn btn-primary btn-sm">Ajouter une nouvelle Journée</a>
+        {% for item in jdAll %}
+            <div class="card" style="width: 25rem;">
+                {# Récupérer la dernière image si passé sinon rien #}
+                <div class="card-body">
+                    <h3 class="card-title">{{ item.title }}</h3>
+                    <p class="card-text">À {{ item.lieu }}, le {{ item.date|date("d F Y") }}</p>
+                </div>
+                <a href="{{ path('jd.detail', {id: item.id}) }}" class="btn btn-primary">Modifier</a>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

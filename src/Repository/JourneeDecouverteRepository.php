@@ -22,19 +22,16 @@ class JourneeDecouverteRepository extends ServiceEntityRepository
     // /**
     //  * @return JourneeDecouverte[] Returns an array of JourneeDecouverte objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function findAllOrderByDate()
     {
         return $this->createQueryBuilder('j')
-            ->andWhere('j.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('j.id', 'ASC')
-            ->setMaxResults(10)
+            ->orderBy('j.date', 'DESC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?JourneeDecouverte
