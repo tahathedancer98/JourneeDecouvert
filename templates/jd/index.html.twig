@@ -14,7 +14,7 @@
                     <h3 class="card-title">{{ item.title }}</h3>
                     <p class="card-text">À {{ item.lieu }}, le {{ item.date|date("d F Y") }}</p>
                 </div>
-                <a href="{{ path('jd.detail', {id: item.id}) }}" class="btn btn-primary">Modifier</a>
+                <a href="{{ url('jd.detail', {id: item.id}) }}" class="btn btn-primary">Voir le détail</a>
             </div>
         {% endfor %}
     </div>
