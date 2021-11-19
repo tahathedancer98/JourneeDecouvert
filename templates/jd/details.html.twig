@@ -15,7 +15,11 @@
         </div>
 
         {# Si c'est le user qui l'a créé alors il a le bouton modifier sinon non #}
-        <a href="#" class="btn btn-primary btn-sm">Modifier la Journée découverte</a>
+        <a href="{{ url('jd.modifiy', {id: jd.id}) }}" class="btn btn-primary btn-sm">Modifier la Journée découverte</a>
+        <form method="post" action="{{ path('jd.delete', {'id': jd.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ jd.id) }}">
+            <button type="submit" class="btn btn-danger btn-sm">Supprimer la Journée découverte</button>
+        </form>
     </div>
 
 {% endblock %}
