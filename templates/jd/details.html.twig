@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DayDiscover{% endblock %}
+
+{% block body %}
+    <h1>{{ jd.title }}</h1>
+
+    <div class="container">
+
+        <div>
+            <p>À {{ jd.lieu }}, le {{ jd.date|date("d F Y") }}</p>
+            <p>Max grimpeur : {{ jd.nbMaxGrimpeurs }}</p>
+            <p>Niveau minimum: {{ jd.niveauMinimum.nom }}</p>
+            <p>Crée par : {{ jd.organisateur.nom }} {{ jd.organisateur.prenom }}</p>
+        </div>
+
+        {# Si c'est le user qui l'a créé alors il a le bouton modifier sinon non #}
+        <a href="#" class="btn btn-primary btn-sm">Modifier la Journée découverte</a>
+    </div>
+
+{% endblock %}
