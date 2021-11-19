@@ -14,4 +14,19 @@ class HomePageController extends AbstractController
         return $this->render('/home-page.html.twig');
     }
 
+    #[Route('/home', name: 'logged')]
+    public function home(): Response
+    {
+        if($this->get('security.token_storage')->getToken()->getUser() !== null){
+            $user = $this->get('security.token_storage')->getToken()->getUser();
+            $role = $user->getRoles();$role=$role[0];
+            if($role === 'ROLE_OR'){
+                return $this->render('OR/home-page.html.twig');
+            }else if($role === 'ROLE_BRONZE'){
+                return $this->render('BRONZE/home-page.html.twig');
+            }else if($role === 'ROLE_ARGENT'){
+                return $this->render('ARGENT/home-page.html.twig');
+            }
+        }
+    }
 }
