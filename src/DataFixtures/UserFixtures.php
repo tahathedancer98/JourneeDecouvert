@@ -21,7 +21,7 @@ class UserFixtures extends Fixture
         $userBronze->setEmail('bronze@bronze.fr');
         $userBronze->setPassword('$2y$13$kbedYesdUeMI1H27p9LOauk7GB8ty4CZ3hwnlYdhkxuceZn7c7sTi');       //user
         $userBronze->setNbPointsCompetence(0);
-        $userBronze->setNiveau($this->getReference(NiveauFixtures::NIVEAU_BRONZE));
+        $userBronze->setRoles($this->getReference(NiveauFixtures::NIVEAU_BRONZE));
 
         $manager->persist($userBronze);
 
@@ -31,7 +31,7 @@ class UserFixtures extends Fixture
         $userArgent->setEmail('argent@argent.fr');
         $userArgent->setPassword('$2y$13$kbedYesdUeMI1H27p9LOauk7GB8ty4CZ3hwnlYdhkxuceZn7c7sTi');       //user
         $userArgent->setNbPointsCompetence(10);
-        $userArgent->setNiveau($this->getReference(NiveauFixtures::NIVEAU_ARGENT));
+        $userArgent->setRoles($this->getReference(NiveauFixtures::NIVEAU_ARGENT));
 
         $manager->persist($userArgent);
 
@@ -41,7 +41,7 @@ class UserFixtures extends Fixture
         $userOr->setEmail('or@or.fr');
         $userOr->setPassword('$2y$13$kbedYesdUeMI1H27p9LOauk7GB8ty4CZ3hwnlYdhkxuceZn7c7sTi');           //user
         $userOr->setNbPointsCompetence(30);
-        $userOr->setNiveau($this->getReference(NiveauFixtures::NIVEAU_OR));
+        $userOr->setRoles($this->getReference(NiveauFixtures::NIVEAU_OR));
 
         $manager->persist($userOr);
 
