@@ -2,9 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Commentaire;
+use App\Entity\Image;
 use App\Entity\JourneeDecouverte;
-use App\Form\JdType;
+use App\Entity\Niveau;
+use App\Entity\Participation;
+use App\Form\JdFormType;
 use App\Repository\JourneeDecouverteRepository;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,59 +30,106 @@ class JdController extends AbstractController
     #[Route('/journees-decouverte', name: 'jd.index')]
     public function index(): Response
     {
-        //Condition si User co on ajoute un bouton pour créer une JD
         $jdAll = $this->jdRepository->findAllOrderByDate();
+        $niveau_or = $this->getDoctrine()
+            ->getRepository(Niveau::class)
+            ->findOneBy(['nom' => 'Or']);
+        $admin = false;
+        if ($this->getUser()->getNbPointsCompetence() >= $niveau_or->getMinPoints()){
+            $admin = true;
+        }
 
         return $this->render('jd/index.html.twig', [
             'jdAll' => $jdAll,
+            'admin' => $admin,
         ]);
     }
 
     #[Route('/journees-decouverte/ajouter', name: 'jd.add')]
-    public function add(): Response
+    public function add(Request $request, EntityManagerInterface $manager, UserRepository $userRepository): Response
     {
-        $jd = new JourneeDecouverte();
-        //$jd->setOrganisateur(this->getUser()');
-        $form = $this->createForm(JdType::class, $jd);
+        $form = $this->createForm(JdFormType::class);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $jd = $form->getData();
+            $jd->setOrganisateur($this->getUser());
+            $manager->persist($jd);
+
+            $participation = new Participation();
+            $participation->setJd($jd);
+            $participation->setUser($this->getUser());
+            $participation->setPresent(true);
+            $manager->persist($participation);
+
+            $manager->flush();
+
+            return $this->redirectToRoute('jd.index');
+        }
+
         return $this->renderForm('jd/add.html.twig', [
             'form' => $form,
         ]);
-    }
-
-    #[Route('/journees-decouverte/store', name: 'jd.store', methods: 'post')]
-    public function store(Request $request): Response
-    {
-        dd(json_decode($request->getContent()));
-        dd($request->request->get('title'));
-
     }
 
     #[Route('/journees-decouverte/details/{id}', name: 'jd.detail')]
     public function detail($id): Response
     {
         $jd = $this->jdRepository->find($id);
+        $images = $this->getDoctrine()->getRepository(Image::class)->findBy(['jd' => $jd]);
+        $comments = $this->getDoctrine()->getRepository(Commentaire::class)->findBy(['jd' => $jd]);
+        $inscrit = false;
+
+        if ($jd->getDate() < new \DateTime()){
+            $participants = $this->getDoctrine()->getRepository(Participation::class)->findBy(['jd' => $jd, 'present' => true]);
+
+        } else {
+            $participants = $this->getDoctrine()->getRepository(Participation::class)->findBy(['jd' => $jd, 'present' => false]);
+        }
+
+        foreach ($this->getUser()->getParticipations() as $participation){
+            if ($participation->getJd() == $jd ){
+                $inscrit = true;
+                break;
+            }
+        }
         return $this->render('jd/details.html.twig', [
             'jd' => $jd,
+            'images' => $images,
+            'comments' => $comments,
+            'participants' => $participants,
+            'inscrit' => $inscrit,
         ]);
     }
 
     #[Route('/journees-decouverte/modifier/{id}', name: 'jd.modifiy')]
-    public function modify($id): Response
+    public function modify($id, Request $request, EntityManagerInterface $manager): Response
     {
-        dd($id);
+        $jd = $this->jdRepository->find($id);
+
+        $form = $this->createForm(JdFormType::class, $jd);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $jd = $form->getData();
+            $manager->persist($jd);
+            $manager->flush();
+            return $this->redirectToRoute('jd.index');
+        }
+
+        return $this->renderForm('jd/modify.html.twig', [
+            'form' => $form,
+        ]);
     }
 
-    #[Route('/journees-decouverte/update/{id}', name: 'jd.update', methods: 'put')]
-    public function update($id): Response
+    #[Route('/journees-decouverte/delete/{id}', name: 'jd.delete', methods: ['POST'])]
+    public function delete(Request $request, JourneeDecouverte $jd, EntityManagerInterface $manager): Response
     {
-        dd($id);
-    }
-
-    #[Route('/journees-decouverte/delete', name: 'jd.delete', methods: 'delete')]
-    public function delete(Request $request): Response
-    {
-        dd();
-
+        if ($this->isCsrfTokenValid('delete'.$jd->getId(), $request->request->get('_token'))) {
+            $manager->remove($jd);
+            $manager->flush();
+        }
+        return $this->redirectToRoute('jd.index');
     }
 
 }
