@@ -6,7 +6,9 @@
     <h1>Les Journées découvertes</h1>
 
     <div class="container">
-        <a href="{{ url('jd.add') }}" class="btn btn-primary btn-sm">Ajouter une nouvelle Journée</a>
+        {% if admin == true %}
+            <a href="{{ url('jd.add') }}" class="btn btn-primary btn-sm">Ajouter une nouvelle Journée</a>
+        {% endif %}
         {% for item in jdAll %}
             <div class="card" style="width: 25rem;">
                 {# Récupérer la dernière image si passé sinon rien #}
