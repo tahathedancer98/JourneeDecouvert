@@ -37,7 +37,8 @@
             </div>
             <div>
                 <h3>Commentaires :</h3>
-                    {% if comments is not empty %}
+                    {% if date(jd.date) < date() %}
+                        <a href="{{ url('commentaireAdd', {jd_id: jd.id}) }}" class="btn btn-primary btn-sm">Ajouter un commentaire</a>
                         {% for commment in comments %}
                             <div class="card">
                                 <div class="card-body">

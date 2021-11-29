@@ -42,7 +42,7 @@ class CommentaireController extends AbstractController
     }
 
 
-    #[Route('jd/{jd_id}/commentaires/add', name: 'commentaireAdd',methods: 'GET')]
+    #[Route('journee-decouverte/{jd_id}/commentaires/add', name: 'commentaireAdd',methods: 'GET')]
     public function add($jd_id): Response {
         return $this->render('commentaire/add.html.twig',[
             'jd_id' => $jd_id
@@ -66,8 +66,8 @@ class CommentaireController extends AbstractController
         $entityManager->persist($comment);
         $entityManager->flush();
 
-        return $this->render('commentaire/add.html.twig',[
-            'jd_id' => $jd_id
+        return $this->redirectToRoute('jd.detail',[
+            'id' => $jd_id
         ]);
     }
 }
