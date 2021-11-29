@@ -12,7 +12,7 @@ class CommentaireFixtures extends Fixture
     {
         for ($i = 0; $i < 3; $i++) {
             $commentaire[$i] = new Commentaire();
-            $commentaire[$i]->setContent('gkjehkgj zehg zgl ihrzghler gakjgaj jkz');
+            $commentaire[$i]->setContent('Mon commentaire qui veut rien dire ' . $i);
             $commentaire[$i]->setUser($this->getReference(UserFixtures::USER_BRONZE));
             $commentaire[$i]->setJd($this->getReference(JdFixtures::JD_PAST));
             $manager->persist($commentaire[$i]);
@@ -20,7 +20,7 @@ class CommentaireFixtures extends Fixture
 
         for ($i = 3; $i < 6; $i++) {
             $commentaire[$i] = new Commentaire();
-            $commentaire[$i]->setContent('lfkabhfjkabgjk bajbg jkabgj bjkbgaj bgjabgj abgjkbabg');
+            $commentaire[$i]->setContent('Je test mon commentaire ' . $i);
             $commentaire[$i]->setUser($this->getReference(UserFixtures::USER_ARGENT));
             $commentaire[$i]->setJd($this->getReference(JdFixtures::JD_PAST));
             $manager->persist($commentaire[$i]);
@@ -28,7 +28,7 @@ class CommentaireFixtures extends Fixture
 
         for ($i = 6; $i < 9; $i++) {
             $commentaire[$i] = new Commentaire();
-            $commentaire[$i]->setContent('gkjehkgj zehg zgl ihrzghler gakjgaj jkz');
+            $commentaire[$i]->setContent('Je test ce commentaire de tesst ' . $i);
             $commentaire[$i]->setUser($this->getReference(UserFixtures::USER_OR));
             $commentaire[$i]->setJd($this->getReference(JdFixtures::JD_PAST));
             $manager->persist($commentaire[$i]);
