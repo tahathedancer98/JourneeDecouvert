@@ -13,43 +13,58 @@
             <p>Niveau minimum: {{ jd.niveauMinimum.nom }}</p>
             <p>Crée par : {{ jd.organisateur.nom }} {{ jd.organisateur.prenom }}</p>
         </div>
-            <div>
-                <h3>Souvenirs :</h3>
-                    {% if images is not empty%}
-                        {% for image in images %}
-                            <img src="{{ asset('img/' ~ image.name) }}" alt="{{ image.name }}">
-                        {% endfor %}
-                    {% else %}
-                        <p>Pas encore de souvenirs</p>
-                    {% endif %}
-            </div>
-            <div>
-                <h3>Participants :</h3>
-                    {% if participants is not empty %}
+        <div>
+            <h3>Souvenirs :</h3>
+                {% if images is not empty%}
+                    {% for image in images %}
+                        <img src="{{ asset('img/' ~ image.name) }}" alt="{{ image.name }}">
+                    {% endfor %}
+                {% else %}
+                    <p>Pas encore de souvenirs</p>
+                {% endif %}
+        </div>
+        <br>
+        <div>
+            <h3>Participants :</h3>
+                {% if participants is not empty %}
+                    <form class="form-group" action="{{ url('participation.update', {jd: jd.id}) }}" method="post">
                         <ul class="list-group">
                             {% for participant in participants %}
-                                <li class="list-group-item">{{ participant.user.nom }} {{ participant.user.prenom }}</li>
+                                <li class="list-group-item">
+                                    {{ participant.user.nom }} {{ participant.user.prenom }}
+                                    {% if date(jd.date) < date() and app.user == jd.organisateur %}
+                                        <div>
+                                            <label for="present">Présent :</label>
+                                            <input type="checkbox" name="{{ participant.user.id }}" {% if participant.present %} checked {% endif %}>
+                                        </div>
+                                    {% endif %}
+                                </li>
                             {% endfor %}
                         </ul>
-                    {% else %}
-                        <p>Pas encore de participants</p>
-                    {% endif %}
-            </div>
-            <div>
-                <h3>Commentaires :</h3>
-                    {% if comments is not empty %}
-                        {% for commment in comments %}
-                            <div class="card">
-                                <div class="card-body">
-                                    <p>{{ commment.content }}</p>
-                                    <p>Écrit par : {{ commment.user.nom }} {{ commment.user.prenom }}</p>
-                                </div>
+                        {% if date(jd.date) < date() and app.user == jd.organisateur %}
+                            <button type="submit" class="btn btn-primary btn-sm">Enregistrer les modifications</button>
+                        {% endif %}
+                    </form>
+                {% else %}
+                    <p>Pas encore de participants</p>
+                {% endif %}
+        </div>
+        <br>
+        <div>
+            <h3>Commentaires :</h3>
+                {% if comments is not empty %}
+                    {% for commment in comments %}
+                        <div class="card">
+                            <div class="card-body">
+                                <p>{{ commment.content }}</p>
+                                <p>Écrit par : {{ commment.user.nom }} {{ commment.user.prenom }}</p>
                             </div>
-                        {% endfor %}
-                    {% else %}
-                        <p>Pas encore de commentaires</p>
-                    {% endif %}
-            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>Pas encore de commentaires</p>
+                {% endif %}
+        </div>
         {% if app.user %}
             {% if app.user == jd.organisateur %}
                 {% if date(jd.date) > date() %}
@@ -67,7 +82,9 @@
 
             {% elseif date(jd.date) > date() and app.user.nbPointsCompetence >= jd.niveauMinimum.minPoints %}
                 {% if inscrit == true %}
-                    <span>Déjà inscrit !</span>
+                    <form method="post" action="{{ url('participation.delete', {jd: jd.id}) }}">
+                        <button type="submit" class="btn btn-danger btn-sm">Se désinscrire</button>
+                    </form>
                 {% else %}
                     <a href="{{ url('participation.add', {jd: jd.id}) }}" class="btn btn-primary btn-sm">S'inscrire</a>
                 {% endif %}
