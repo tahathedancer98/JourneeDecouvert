@@ -87,12 +87,12 @@ class JdController extends AbstractController
                     break;
                 }
             }
-            if ($jd->getDate() < new \DateTime() && $jd->getOrganisateur() != $this->getUser()){
-                $participants = $this->getDoctrine()->getRepository(Participation::class)->findBy(['jd' => $jd, 'present' => true]);
+        }
+        if ($this->getUser() && $jd->getDate() < new \DateTime() && $jd->getOrganisateur() != $this->getUser()){
+            $participants = $this->getDoctrine()->getRepository(Participation::class)->findBy(['jd' => $jd, 'present' => true]);
 
-            } else {
-                $participants = $this->getDoctrine()->getRepository(Participation::class)->findBy(['jd' => $jd]);
-            }
+        } else {
+            $participants = $this->getDoctrine()->getRepository(Participation::class)->findBy(['jd' => $jd]);
         }
         return $this->render('jd/details.html.twig', [
             'jd' => $jd,

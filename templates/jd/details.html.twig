@@ -52,7 +52,15 @@
         <br>
         <div>
             <h3>Commentaires :</h3>
-                {% if comments is not empty %}
+                {% if date(jd.date) < date() %}
+                    <a {% if app.user %}
+                            href="{{ url('commentaireAdd', {jd_id: jd.id}) }}"
+                        {% else %}
+                            href="{{ url('app_register') }}"
+                        {% endif %}
+                        class="btn btn-primary btn-sm">
+                        Ajouter un commentaire
+                    </a>
                     {% for commment in comments %}
                         <div class="card">
                             <div class="card-body">
@@ -61,9 +69,9 @@
                             </div>
                         </div>
                     {% endfor %}
-                {% else %}
-                    <p>Pas encore de commentaires</p>
-                {% endif %}
+            {% else %}
+                <p>Pas encore de commentaires</p>
+            {% endif %}
         </div>
         {% if app.user %}
             {% if app.user == jd.organisateur %}

@@ -23,17 +23,7 @@ class CommentaireRepository extends ServiceEntityRepository
     //  * @return Commentaire[] Returns an array of Commentaire objects
     //  */
     /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
+
     */
 
     /*
@@ -47,4 +37,15 @@ class CommentaireRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByJdID($jd_id)
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.jd = :val')
+            ->setParameter('val', $jd_id)
+            ->orderBy('c.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }
