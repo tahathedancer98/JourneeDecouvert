@@ -35,7 +35,7 @@ class JdController extends AbstractController
             ->getRepository(Niveau::class)
             ->findOneBy(['nom' => 'Or']);
         $admin = false;
-        if ($this->getUser()->getNbPointsCompetence() >= $niveau_or->getMinPoints()){
+        if ($this->getUser() && $this->getUser()->getNbPointsCompetence() >= $niveau_or->getMinPoints()){
             $admin = true;
         }
 
@@ -80,18 +80,19 @@ class JdController extends AbstractController
         $comments = $this->getDoctrine()->getRepository(Commentaire::class)->findBy(['jd' => $jd]);
         $inscrit = false;
 
-        if ($jd->getDate() < new \DateTime()){
+        if ($this->getUser()) {
+            foreach ($this->getUser()->getParticipations() as $participation) {
+                if ($participation->getJd() == $jd) {
+                    $inscrit = true;
+                    break;
+                }
+            }
+        }
+        if ($this->getUser() && $jd->getDate() < new \DateTime() && $jd->getOrganisateur() != $this->getUser()){
             $participants = $this->getDoctrine()->getRepository(Participation::class)->findBy(['jd' => $jd, 'present' => true]);
 
         } else {
-            $participants = $this->getDoctrine()->getRepository(Participation::class)->findBy(['jd' => $jd, 'present' => false]);
-        }
-
-        foreach ($this->getUser()->getParticipations() as $participation){
-            if ($participation->getJd() == $jd ){
-                $inscrit = true;
-                break;
-            }
+            $participants = $this->getDoctrine()->getRepository(Participation::class)->findBy(['jd' => $jd]);
         }
         return $this->render('jd/details.html.twig', [
             'jd' => $jd,
