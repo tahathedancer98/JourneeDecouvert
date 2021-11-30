@@ -1,11 +1,22 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Bienvenue chez DayDiscover</h1>
+    <h1>Bienvenue {% if(app.user()) %}<b style="color: #1b9448">{{ app.user().getNom() }}</b>{% endif %} chez DayDiscover</h1>
     <p>Via ce site vous pourrez consulter des journées découvertes réalisées par nos grimpeurs et même y particper ! </p>
     <p>Plus vous participez à des journées dévouvertes plus vous gagnez des points</p>
-    <br /><br /><br />
-
-    <a href="{{ path('app_login') }}" class="btn btn-success">Se connecter</a>
-    <a href="{{ path('app_register') }}" class="btn btn-secondary">S'inscrire</a>
+    {% if(app.user()) %}
+        {% if(app.user().getRoles() == "ROLE_OR") %}
+            Vous pouvez ainsi créer vos journées découvertes.
+        {% elseif (app.user().getRoles() == "ROLE_BRONZE")%}
+            Vous pouvez participer à une journée découverte.
+        {% elseif (app.user().getRoles() == "ROLE_ARGENT")%}
+        {% endif %}
+        <br /><br /><br />
+        <a href="{{ url('jd.index') }}" class="btn btn-outline-success" style="margin-right: 3px">
+            Les journées découverte
+        </a>
+    {% else %}
+        <a href="{{ path('app_login') }}" class="btn btn-success">Se connecter</a>
+        <a href="{{ path('app_register') }}" class="btn btn-secondary">S'inscrire</a>
+    {% endif %}
 {% endblock %}

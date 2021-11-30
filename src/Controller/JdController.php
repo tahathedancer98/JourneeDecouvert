@@ -35,7 +35,7 @@ class JdController extends AbstractController
             ->getRepository(Niveau::class)
             ->findOneBy(['nom' => 'Or']);
         $admin = false;
-        if ($this->getUser()->getNbPointsCompetence() >= $niveau_or->getMinPoints()){
+        if ($this->getUser() && $this->getUser()->getNbPointsCompetence() >= $niveau_or->getMinPoints()){
             $admin = true;
         }
 
@@ -86,13 +86,15 @@ class JdController extends AbstractController
         } else {
             $participants = $this->getDoctrine()->getRepository(Participation::class)->findBy(['jd' => $jd, 'present' => false]);
         }
-
-        foreach ($this->getUser()->getParticipations() as $participation){
-            if ($participation->getJd() == $jd ){
-                $inscrit = true;
-                break;
+        if ($this->getUser()){
+            foreach ($this->getUser()->getParticipations() as $participation){
+                if ($participation->getJd() == $jd ){
+                    $inscrit = true;
+                    break;
+                }
             }
         }
+
         return $this->render('jd/details.html.twig', [
             'jd' => $jd,
             'images' => $images,
