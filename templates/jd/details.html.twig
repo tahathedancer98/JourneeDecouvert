@@ -15,6 +15,14 @@
         </div>
         <div>
             <h3>Souvenirs :</h3>
+                {% if app.user == jd.organisateur and date(jd.date) < date() %}
+                    {# Insérer le formulaire #}
+                    <form action="#" method="post">
+                        <label for="img">Ajouter des images</label>
+                        <input type="file" id="img" name="img">
+                        <button type="submit" class="btn btn-primary btn-sm">Ajouter les images</button>
+                    </form>
+                {% endif %}
                 {% if images is not empty%}
                     {% for image in images %}
                         <img src="{{ asset('img/' ~ image.name) }}" alt="{{ image.name }}">
@@ -35,7 +43,9 @@
                                     {% if date(jd.date) < date() and app.user == jd.organisateur %}
                                         <div>
                                             <label for="present">Présent :</label>
-                                            <input type="checkbox" name="{{ participant.user.id }}" {% if participant.present %} checked {% endif %}>
+                                            <input type="checkbox" name="{{ participant.user.id }}"
+                                                    {% if participant.present %} checked {% endif %}
+                                            >
                                         </div>
                                     {% endif %}
                                 </li>
@@ -79,13 +89,13 @@
                     <a href="{{ url('jd.modifiy', {id: jd.id}) }}"
                        class="btn btn-primary btn-sm"
                     >Modifier la Journée découverte</a>
-                    <form method="post" action="{{ path('jd.delete', {'id': jd.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                    <form method="post"
+                          action="{{ path('jd.delete', {'id': jd.id}) }}"
+                          onsubmit="return confirm('Are you sure you want to delete this item?');"
+                    >
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ jd.id) }}">
                         <button type="submit" class="btn btn-danger btn-sm">Supprimer la Journée découverte</button>
                     </form>
-                {% else %}
-                    <label for="img">Ajouter des images</label>
-                    <input type="file">
                 {% endif %}
 
             {% elseif date(jd.date) > date() and app.user.nbPointsCompetence >= jd.niveauMinimum.minPoints %}
@@ -101,7 +111,4 @@
             <a href="{{ url('participation.add', {jd: jd.id}) }}" class="btn btn-primary btn-sm">S'inscrire</a>
         {% endif %}
     </div>
-
-    {#  Si la journée est passé on peut mettre un commentaire   #}
-
 {% endblock %}
