@@ -5,11 +5,12 @@
     <p>Via ce site vous pourrez consulter des journées découvertes réalisées par nos grimpeurs et même y particper ! </p>
     <p>Plus vous participez à des journées dévouvertes plus vous gagnez des points</p>
     {% if(app.user()) %}
-        {% if(app.user().getRoles() == "ROLE_OR") %}
-            Vous pouvez ainsi créer vos journées découvertes.
-        {% elseif (app.user().getRoles() == "ROLE_BRONZE")%}
-            Vous pouvez participer à une journée découverte.
-        {% elseif (app.user().getRoles() == "ROLE_ARGENT")%}
+        {% if(app.user().getRoles()[0] == 'ROLE_OR') %}
+            Vous êtez <b>OR</b>, vous pouvez ainsi créer vos journées découvertes.
+        {% elseif (app.user().getRoles()[0] == "ROLE_BRONZE")%}
+            Vous êtez <b>BRONZE</b>, vous pouvez participer à une ou plusieurs journées découvertes.
+        {% elseif (app.user().getRoles()[0] == "ROLE_ARGENT")%}
+            Vous êtez <b>ARGENT</b>, vous pouvez participer à une ou plusieurs journées découvertes.
         {% endif %}
         <br /><br /><br />
         <a href="{{ url('jd.index') }}" class="btn btn-outline-success" style="margin-right: 3px">

@@ -18,11 +18,11 @@
     <div class="row">
         <div class="col-md-4 offset-md-4">
             <div class="login-form bg-light mt-4 p-4">
-                    <h4>Connexion</h4>
+                    <h4 class="offset-md-4">Connexion</h4>
                     <hr class="mt-4">
                     <div class="col-12">
                         <label>Email</label>
-                        <input class="form-control" value="{{ last_username }}" name="email" id="inputEmail" autocomplete="email" required autofocus>
+                        <input class="form-control" name="email" id="inputEmail" autocomplete="email" required autofocus>
                     </div>
                     <div class="col-12">
                         <label>Mot de passe</label>
@@ -30,7 +30,7 @@
                     </div>
                     <button class="btn btn-lg btn-dark float-end" type="submit">
                         Se connecter
-                    </button>git
+                    </button>
                     <input type="hidden" name="_csrf_token"
                            value="{{ csrf_token('authenticate') }}"
                     >
