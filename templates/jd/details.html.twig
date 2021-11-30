@@ -16,17 +16,22 @@
         <div>
             <h3>Souvenirs :</h3>
                 {% if app.user == jd.organisateur and date(jd.date) < date() %}
-                    {# Insérer le formulaire #}
-                    <form action="#" method="post">
-                        <label for="img">Ajouter des images</label>
-                        <input type="file" id="img" name="img">
-                        <button type="submit" class="btn btn-primary btn-sm">Ajouter les images</button>
-                    </form>
+                    <div>
+                        <a href="{{ url('image.index', {jd: jd.id}) }}" class="btn btn-primary btn-sm">
+                            Ajouter des images
+                        </a>
+                    </div>
                 {% endif %}
                 {% if images is not empty%}
-                    {% for image in images %}
-                        <img src="{{ asset('img/' ~ image.name) }}" alt="{{ image.name }}">
-                    {% endfor %}
+                    <div class="row">
+                        {% for image in images %}
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <img class="card-img-top" src="{{ asset('img/' ~ image.name) }}" alt="{{ image.name }}" height="220" style="object-fit: cover">
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
                 {% else %}
                     <p>Pas encore de souvenirs</p>
                 {% endif %}

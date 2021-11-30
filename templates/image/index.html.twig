@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DayDiscover | Image{% endblock %}
+
+{% block body %}
+    <h1>Ajouter des images à la journée : {{ jd.title }}</h1>
+
+    {% if message %}
+        <div class="col-md-4 offset-md-4">
+            <div class="login-form bg-light mt-4 p-4">
+                <div class="alert alert-danger">
+                     {{ message }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {{ form_start(imageForm) }}
+        {{ form_row(imageForm.name) }}
+    {{ form_end(imageForm) }}
+
+{% endblock %}

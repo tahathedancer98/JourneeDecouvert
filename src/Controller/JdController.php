@@ -7,6 +7,7 @@ use App\Entity\Image;
 use App\Entity\JourneeDecouverte;
 use App\Entity\Niveau;
 use App\Entity\Participation;
+use App\Form\ImageJdFormType;
 use App\Form\JdFormType;
 use App\Repository\JourneeDecouverteRepository;
 use App\Repository\UserRepository;
@@ -60,6 +61,7 @@ class JdController extends AbstractController
             $participation->setJd($jd);
             $participation->setUser($this->getUser());
             $participation->setPresent(true);
+            $participation->getUser()->setNbPointsCompetence($participation->getUser()->getNbPointsCompetence() + 1);
             $manager->persist($participation);
 
             $manager->flush();
@@ -95,12 +97,15 @@ class JdController extends AbstractController
             $participants = $this->getDoctrine()->getRepository(Participation::class)->findBy(['jd' => $jd]);
         }
 
+        $imageForm = $this->createForm(ImageJdFormType::class);
+
         return $this->render('jd/details.html.twig', [
             'jd' => $jd,
             'images' => $images,
             'comments' => $comments,
             'participants' => $participants,
             'inscrit' => $inscrit,
+            'imageForm' => $imageForm->createView(),
         ]);
     }
 
