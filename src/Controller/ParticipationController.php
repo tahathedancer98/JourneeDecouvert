@@ -46,9 +46,18 @@ class ParticipationController extends AbstractController
         $participations = $this->participationRepository->findBy(['jd' => $jd->getId()]);
         foreach ($participations as $participation) {
             if (array_key_exists($participation->getUser()->getId(), $data)){
-                $participation->setPresent(true);
+                if(!$participation->getPresent()){
+                    $participation->setPresent(true);
+                    $participation->getUser()->setNbPointsCompetence($participation->getUser()->getNbPointsCompetence()+1);
+                    if($participation->getUser()->getNbPointsCompetence() == 10){
+
+                    }
+                }
             } else {
-                $participation->setPresent(false);
+                if($participation->getPresent()){
+                    $participation->setPresent(false);
+                    $participation->getUser()->setNbPointsCompetence($participation->getUser()->getNbPointsCompetence()-1);
+                }
             }
                 $manager->persist($participation);
         }
