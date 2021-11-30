@@ -80,19 +80,19 @@ class JdController extends AbstractController
         $comments = $this->getDoctrine()->getRepository(Commentaire::class)->findBy(['jd' => $jd]);
         $inscrit = false;
 
-        if ($jd->getDate() < new \DateTime()){
-            $participants = $this->getDoctrine()->getRepository(Participation::class)->findBy(['jd' => $jd, 'present' => true]);
-
-        } else {
-            $participants = $this->getDoctrine()->getRepository(Participation::class)->findBy(['jd' => $jd, 'present' => false]);
-        }
-        if ($this->getUser()){
-            foreach ($this->getUser()->getParticipations() as $participation){
-                if ($participation->getJd() == $jd ){
+        if ($this->getUser()) {
+            foreach ($this->getUser()->getParticipations() as $participation) {
+                if ($participation->getJd() == $jd) {
                     $inscrit = true;
                     break;
                 }
             }
+        }
+        if ($this->getUser() && $jd->getDate() < new \DateTime() && $jd->getOrganisateur() != $this->getUser()){
+            $participants = $this->getDoctrine()->getRepository(Participation::class)->findBy(['jd' => $jd, 'present' => true]);
+
+        } else {
+            $participants = $this->getDoctrine()->getRepository(Participation::class)->findBy(['jd' => $jd]);
         }
 
         return $this->render('jd/details.html.twig', [
