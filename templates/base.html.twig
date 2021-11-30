@@ -16,12 +16,95 @@
         {% endblock %}
     </head>
     <body>
-        <nav>
-            <ul>
-                <li><a href="{{ url('homepage') }}">Acceuil</a></li>
-                <li><a href="{{ url('jd.index') }}">Les journées découverte</a></li>
-            </ul>
-        </nav>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="margin-bottom: 3em;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url('homepage') }}">DayDiscover</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <ul class="nav navbar-nav navbar-left">
+                        <li>
+                            <a href="{{ url('homepage') }}" class="btn btn-outline-success" style="margin-right: 3px">
+                                Acceuil
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url('jd.index') }}" class="btn btn-outline-success" style="margin-right: 3px">
+                                Les journées découverte
+                            </a>
+                        </li>
+                        {% if(app.user() == null) %}
+                            <li>
+                                <a href="{{ path('app_login') }}" class="btn btn-outline-success" style="margin-right: 3px">
+                                    Se connecter
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('app_register') }}" class="btn btn-outline-success" style="margin-right: 3px">
+                                    S'inscrire
+                                </a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{{ path('app_logout') }}" class="btn btn-outline-warning" style="margin-right: 3px">
+                                    Se déconnecter
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
         {% block body %}{% endblock %}
+
+    <!-- Footer -->
+    <footer class="bg-dark text-center text-white" style="margin-top: 3em;">
+        <!-- Grid container -->
+        <div class="container p-4">
+            <!-- Section: Text -->
+            <section class="mb-4">
+                <p>
+                    La réalisation du projet des journées de découverte que nous avons nommé DayDiscover durant notre formation <b>Master 1</b> en <i>alternance</i> à l'école <i>H3 Hitema</i>.
+                </p>
+            </section>
+            <!-- Section: Text -->
+
+            <!-- Section: Links -->
+            <section class="">
+                <!--Grid row-->
+                <div class="row">
+                    <div class="col-12" style="float: left;">
+                        <h4>Technologies utilisées</h4>
+                    </div>
+                    <div class="col-12" style="float: left;">
+                        <ul class="list-unstyled mb-0">
+                            <a href="https://www.php.net/" target="_blank" class="btn btn-dark">PHP</a>
+                            <a href="https://symfony.com/" target="_blank" class="btn btn-dark">SYMFONY</a>
+                            <a href="https://www.mysql.com/fr/" target="_blank" class="btn btn-dark">MYSQL</a>
+                            <a href="https://getbootstrap.com/" target="_blank" class="btn btn-dark">BOOTSTRAP</a>
+                        </ul>
+                    </div>
+                    <!--Grid column-->
+
+                    <!--Grid column-->
+                </div>
+                <!--Grid row-->
+            </section>
+            <!-- Section: Links -->
+        </div>
+        <!-- Grid container -->
+
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+            © 2021 Copyright:
+            <a class="text-white" href="https://github.com/tahathedancer98/JourneeDecouvert" target="_blank">CODE SOURCE</a>
+        </div>
+        <!-- Copyright -->
+    </footer>
+    <!-- Footer -->
     </body>
 </html>

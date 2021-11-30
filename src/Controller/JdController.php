@@ -94,6 +94,7 @@ class JdController extends AbstractController
         } else {
             $participants = $this->getDoctrine()->getRepository(Participation::class)->findBy(['jd' => $jd]);
         }
+
         return $this->render('jd/details.html.twig', [
             'jd' => $jd,
             'images' => $images,
